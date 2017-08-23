@@ -16,6 +16,7 @@ endfunction
 
 call s:InitVariable('g:BufSurfIgnore', '')
 call s:InitVariable('g:BufSurfMessages', 1)
+call s:InitVariable('g:BufSurfAppearOnce', 1)
 
 command BufSurfBack :call <SID>BufSurfBack()
 command BufSurfForward :call <SID>BufSurfForward()
@@ -102,6 +103,11 @@ function s:BufSurfAppend(bufnr)
     let l:is_buffer_listed = (w:history_index != len(w:history) && w:history[w:history_index] == a:bufnr)
 
     if !l:is_buffer_listed
+		if g:BufSurfAppearOnce == 1
+			" Remove the buffer from all window histories.
+			" Avoid the buffer appearing more than once in the history.
+			call filter(w:history, 'v:val !=' . a:bufnr)
+		endif
         let w:history = insert(w:history, a:bufnr, w:history_index)
     endif
 endfunction

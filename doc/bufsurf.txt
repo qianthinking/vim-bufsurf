@@ -98,6 +98,11 @@ The following is a list of all available options:
 
         Indicates whether BufSurf (warning) messages should be displayed.
 
+                                                             *g:BufSurfAppearOnce*
+    |g:BufSurfAppearOnce|          Boolean value; either 0 or 1 (default: 1)
+
+        Indicates whether only remaining one record of a buffer in the history
+        list.
 
 LICENSE                                                      *bufsurf-license*
 
