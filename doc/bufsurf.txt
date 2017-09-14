@@ -104,6 +104,23 @@ The following is a list of all available options:
         Indicates whether only remaining one record of a buffer in the history
         list.
 
+UNITE SOURCE                                    *bufsurf-unite-source-bufsurf*
+
+bufsurs provides |unite| source for displaying bufsurf history for last
+accessed window as a list of buffer candidates. Usage example:
+>
+    :Unite bufsurf
+<
+
+
+                                         *bufsurf-unite-filter-sorter_bufsurf*
+bufsurf's Unite source is actually a thin wrapper over stock Unite buffer
+source made with using sorter_bufsurf Unite filter (also provided by bufsurf).
+Filter accesses bufsurf history (list of buffers' numbers) and converts it
+into buffers list consisting of matching candidates got from list of
+candidates passed to filter. Filter also preselects current buffer in Unite UI
+(by default).
+
 LICENSE                                                      *bufsurf-license*
 
 Copyright 2010-2012 Ton van den Heuvel. All rights reserved.
