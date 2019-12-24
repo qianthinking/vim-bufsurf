@@ -16,6 +16,7 @@ endfunction
 
 call s:InitVariable('g:BufSurfIgnore', '')
 call s:InitVariable('g:BufSurfMessages', 1)
+call s:InitVariable('g:BufSurfAppearOnce', 1)
 
 command BufSurfBack :call <SID>BufSurfBack()
 command BufSurfForward :call <SID>BufSurfForward()
@@ -102,6 +103,18 @@ function s:BufSurfAppend(bufnr)
     let l:is_buffer_listed = (w:history_index != len(w:history) && w:history[w:history_index] == a:bufnr)
 
     if !l:is_buffer_listed
+        if g:BufSurfAppearOnce == 1
+            " Remove the buffer from all window histories.
+            " Avoid the buffer appearing more than once in the history.
+            if w:history_index == 0
+                call filter(w:history, 'v:val !=' . a:bufnr)
+            else
+            " removing elements from history then find correct index postion
+                let l:bufnr = w:history[w:history_index-1]
+                call filter(w:history, 'v:val !=' . a:bufnr)
+                let w:history_index = match(w:history, l:bufnr) + 1
+            endif
+        endif
         let w:history = insert(w:history, a:bufnr, w:history_index)
     endif
 endfunction
@@ -170,5 +183,5 @@ augroup BufSurf
   autocmd!
   autocmd BufEnter * :call s:BufSurfAppend(winbufnr(winnr()))
   autocmd WinEnter * :call s:BufSurfAppend(winbufnr(winnr()))
-  autocmd BufWipeout * :call s:BufSurfDelete(winbufnr(winnr()))
+  autocmd BufDelete * :call s:BufSurfDelete(str2nr(expand("<abuf>")))
 augroup End
